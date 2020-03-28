@@ -4,3 +4,6 @@
 # C extensions
 *.so
 *.o
+
+# RPM build working folders
+/build
