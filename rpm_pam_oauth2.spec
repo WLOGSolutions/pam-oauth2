@@ -26,7 +26,7 @@ PAM module to autenticate users with KeyCloak access token.
 
 %install
 install -d %{buildroot}/lib64/security
-install -m 644 pam_oauth2.so %{buildroot}/lib64/security
+install -m 755 pam_oauth2.so %{buildroot}/lib64/security
 
 %clean
 
