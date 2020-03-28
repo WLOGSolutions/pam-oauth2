@@ -132,7 +132,7 @@ static int check_response(const struct response token_info, struct check_tokens 
 
 static int query_token_info(const char * const tokeninfo_url, const char * const authtok, long *response_code, struct response *token_info) {
     int ret = 1;
-    char *url;
+    char *url, *post_data;
     CURL *session = curl_easy_init();
 
     if (!session) {
@@ -143,6 +143,14 @@ static int query_token_info(const char * const tokeninfo_url, const char * const
     if ((url = malloc(strlen(tokeninfo_url) + strlen(authtok) + 1))) {
         strcpy(url, tokeninfo_url);
         strcat(url, authtok);
+
+        post_data = strrchr(url, '?');
+        if (post_data) {
+                post_data[0] = 0;
+                post_data++;
+                curl_easy_setopt(session, CURLOPT_POSTFIELDSIZE, strlen(post_data));
+                curl_easy_setopt(session, CURLOPT_POSTFIELDS, post_data);
+        }
 
         curl_easy_setopt(session, CURLOPT_URL, url);
         curl_easy_setopt(session, CURLOPT_WRITEFUNCTION, writefunc);
